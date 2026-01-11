@@ -29,15 +29,20 @@ def _collect_unique_links(texts, folder_titles):
                             links.append("<DT>" + a_tag.strip())
     return links
 
-def insert_links_after_h3(html_text, folder_title, new_links_lines):
+def insert_links_after_h3(html_text, folder_titles, new_links_lines):
     # new_links_lines: list of strings like '<DT><A HREF="...">Title</A>'
-    h3_match = re.search(
-        rf"<H3[^>]*>\s*{re.escape(folder_title)}\s*</H3>",
-        html_text,
-        flags=re.IGNORECASE,
-    )
+    for folder_title in folder_titles:
+        h3_match = re.search(
+            rf"<H3[^>]*>\s*{re.escape(folder_title)}\s*</H3>",
+            html_text,
+            flags=re.IGNORECASE,
+        )
+        if h3_match:
+            break
+
     if not h3_match:
         raise ValueError("H3 folder title not found")
+    
 
     start = h3_match.end()
     dl_match = re.search(r"<DL><p>", html_text[start:], flags=re.IGNORECASE)
@@ -53,7 +58,7 @@ def insert_links_after_h3(html_text, folder_title, new_links_lines):
     insertion = "\n" + "\n".join(new_links_lines) + "\n"
     return html_text[:dl_content_start] + insertion + html_text[dl_end:]
 
-def stabilize_tabs(source_path1, source_path2, folder_title, output_path):
+def stabilize_tabs(source_path1, source_path2, folder_titles, output_path):
     with open(source_path1, "r", encoding="utf-8") as f1:
         source1 = f1.read()
     with open(source_path2, "r", encoding="utf-8") as f2:
@@ -64,7 +69,7 @@ def stabilize_tabs(source_path1, source_path2, folder_title, output_path):
     )
     print(f"Collected {len(links)} unique links.")
 
-    new_html = insert_links_after_h3(source1, "Favourites bar", links)
+    new_html = insert_links_after_h3(source1, folder_titles, links)
 
     with open(output_path, "w", encoding="utf-8") as out_file:
         out_file.write(new_html)
@@ -76,6 +81,6 @@ def stabilize_tabs(source_path1, source_path2, folder_title, output_path):
 stabilize_tabs(
     r"C:\Users\nikit\Downloads\favourites_10_01_2026.html",
     r"C:\Users\nikit\Downloads\bookmarks_10_01_2026-02.html",
-    "Favourites bar",
+    ("Favourites bar", "Bookmarks bar"),
     "stabilized_bookmarks.html",
 )
