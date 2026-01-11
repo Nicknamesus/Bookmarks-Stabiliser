@@ -78,9 +78,11 @@ def stabilize_tabs(source_path1, source_path2, folder_titles, output_path):
 
 
 
+"""
 stabilize_tabs(
-    r"C:\Users\nikit\Downloads\favourites_10_01_2026.html",
-    r"C:\Users\nikit\Downloads\bookmarks_10_01_2026-02.html",
+    r"favourites_10_01_2026.html",
+    r"bookmarks_10_01_2026-02.html",
     ("Favourites bar", "Bookmarks bar"),
     "stabilized_bookmarks.html",
 )
+"""
