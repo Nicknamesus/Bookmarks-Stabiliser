@@ -8,3 +8,5 @@ The main function is ``` stabilize_tabs(source_path1, source_path2, folder_title
 For now the output file will always be "stabilised_tabs.html".
 
 This was not stress tested, so I will problably be really easy to break it. If any major issues arise you can either propose changes or ask me to fix the bug.
+
+A working function call is provided as a comment at the end of the file.
