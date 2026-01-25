@@ -20,7 +20,7 @@ def _collect_unique_links(texts, folder_titles):
                         if not href_match:
                             continue
                         href = href_match.group(1).strip()
-                        icon_match = re.search(r'icon="data:image[^"]*"', a_tag)
+                        icon_match = re.search(r'icon="data:image[^"]*"', a_tag, flags=re.IGNORECASE)
                         if icon_match:
                             a_tag = a_tag.replace(icon_match.group(0), "")
                         key = href
